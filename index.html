@@ -289,25 +289,7 @@
   <p class="note">// 추가 리워드 없이, 자발적 바이럴을 위한 인증 카드<br>POWERED BY SO, GREEN × ESG</p>
 </div>
 
-<!-- INSTA STORY MOCKUP -->
-<div class="story-overlay" id="storyOverlay">
-  <div style="position:relative">
-    <div class="story-cap" id="storyCap">↓ 인스타 스토리에 이렇게 올라가요 (시연용 미리보기)</div>
-    <div class="story-frame">
-      <div class="story-head"><span class="ava"></span><span style="color:#fff">socar_user</span></div>
-      <div class="mini-receipt">
-        <div class="ml"><span style="color:#00b4ff">SO,</span> <span class="green">GREEN</span></div>
-        <div class="me">
-          <div class="l">SHARE EFFECT</div>
-          <div class="b">오늘도 <span id="msTree">1.2</span>그루의<br>소나무를 지켰습니다!</div>
-        </div>
-        <div class="mf">소유 대신 공유,<br>오늘도 영리하게 이동 완료 🌲</div>
-      </div>
-      <div class="story-sticker">#SOGREEN #공유가이긴다</div>
-    </div>
-    <button class="story-close" onclick="closeStory()">닫기</button>
-  </div>
-</div>
+<!-- INSTA STORY MOCKUP 제거됨 -->
 
 <div class="toast" id="toast"></div>
 
@@ -335,23 +317,17 @@ function setSvc(key){
   document.getElementById("lco2").textContent=s.co2;
   document.getElementById("lscore").textContent=s.score;
   document.getElementById("rUser").textContent=s.user;
-  document.getElementById("msTree").textContent=s.tree;
-  document.querySelector(".story-head span:last-child").textContent = s.handle;
   // re-trigger print animation
   const r=document.getElementById("receipt");
   r.style.animation="none"; void r.offsetWidth; r.style.animation="";
 }
 
 function openStory(){
-  // 목업: 실제 인스타 연동 없이 스토리 미리보기만 표시
-  document.getElementById("storyOverlay").classList.add("show");
-}
-function closeStory(){
-  document.getElementById("storyOverlay").classList.remove("show");
-  toast("스토리에 공유했어요! (시연용)");
+  // 목업: 실제 인스타 연동 없이 공유 완료 안내만 표시
+  toast("인스타그램 스토리에 공유했어요!");
 }
 function saveImage(){
-  toast("뱃지를 이미지로 저장했어요 (시연용)");
+  toast("뱃지를 이미지로 저장했어요");
 }
 function toast(msg){
   const t=document.getElementById("toast");
