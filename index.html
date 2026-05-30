@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SO, GREEN — 반납 완료</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Mono:wght@400;700&display=swap');
+  @import url('//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css');
+
+  :root{
+    --bg:#02152b;
+    --bg-2:#06294d;
+    --socar:#00b4ff;
+    --socar-bright:#3fd2ff;
+    --green:#27e09a;
+    --green-deep:#0fae74;
+    --paper:#fbfaf4;
+    --ink:#0a1f33;
+    --muted:#6a7c90;
+    --line:rgba(10,31,51,.14);
+    --eleca:#7a5cff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:'Spoqa Han Sans Neo','Gothic A1',sans-serif;
+    background:
+      radial-gradient(130% 90% at 85% -10%, rgba(0,180,255,.35), transparent 55%),
+      radial-gradient(120% 80% at 0% 105%, rgba(39,224,154,.22), transparent 55%),
+      linear-gradient(180deg,var(--bg),#01101f);
+    color:#fff;
+    min-height:100dvh;
+    display:flex;align-items:center;justify-content:center;
+    padding:24px 16px;
+    overflow-x:hidden;
+  }
+  /* faint grain */
+  body::after{
+    content:"";position:fixed;inset:0;pointer-events:none;opacity:.05;mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .phone{
+    width:100%;max-width:400px;position:relative;z-index:1;
+    display:flex;flex-direction:column;gap:18px;
+  }
+
+  /* header / 반납완료 */
+  .done-head{text-align:center;animation:rise .5s ease both}
+  .done-check{
+    width:64px;height:64px;border-radius:50%;margin:0 auto 12px;
+    background:linear-gradient(135deg,var(--green),var(--green-deep));
+    display:grid;place-items:center;font-size:30px;
+    box-shadow:0 0 0 8px rgba(39,224,154,.16), 0 16px 30px -12px rgba(15,174,116,.8);
+    animation:popIn .55s cubic-bezier(.2,1.2,.3,1) both;
+  }
+  .done-head h1{font-size:22px;font-weight:800;letter-spacing:-.02em}
+  .done-head p{font-size:13.5px;color:#9fc4e3;margin-top:4px;font-weight:500}
+
+  /* service toggle */
+  .svc-toggle{
+    display:flex;gap:6px;background:rgba(255,255,255,.07);border-radius:999px;padding:5px;
+    width:max-content;margin:0 auto;backdrop-filter:blur(6px);
+  }
+  .svc-toggle button{
+    border:none;cursor:pointer;font-family:inherit;font-weight:800;font-size:12.5px;
+    padding:8px 16px;border-radius:999px;background:transparent;color:#9fc4e3;letter-spacing:.02em;
+    transition:.2s;
+  }
+  .svc-toggle button.on{background:#fff;color:var(--ink)}
+  .svc-toggle button.on.eleca{background:var(--eleca);color:#fff}
+
+  /* ===== RECEIPT BADGE ===== */
+  .receipt-stage{display:flex;justify-content:center;perspective:1200px}
+  .receipt{
+    width:300px;background:var(--paper);color:var(--ink);
+    position:relative;padding:26px 26px 30px;
+    box-shadow:0 30px 60px -24px rgba(0,0,0,.7);
+    animation:printOut .8s cubic-bezier(.2,.8,.2,1) both;
+    transform-origin:top center;
+  }
+  /* torn edges */
+  .receipt::before,.receipt::after{
+    content:"";position:absolute;left:0;right:0;height:10px;
+    background-size:16px 16px;
+  }
+  .receipt::before{
+    top:-9px;
+    background:radial-gradient(circle at 8px 10px, transparent 8px, var(--paper) 8px);
+  }
+  .receipt::after{
+    bottom:-9px;
+    background:radial-gradient(circle at 8px 0px, transparent 8px, var(--paper) 8px);
+  }
+
+  .r-brand{
+    display:flex;align-items:center;justify-content:space-between;
+    font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.05em;color:var(--muted);
+    border-bottom:1.5px dashed var(--line);padding-bottom:10px;
+  }
+  .r-brand .svc{font-weight:700;color:var(--ink)}
+  .r-logo{
+    font-family:'Archivo Black',sans-serif;font-size:30px;line-height:1;letter-spacing:-.02em;
+    margin:16px 0 2px;
+  }
+  .r-logo .green{color:var(--green-deep)}
+  .r-logo .so{color:var(--socar)}
+  .r-tag{font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.18em;color:var(--muted);text-transform:uppercase}
+
+  .r-effect{
+    margin:20px 0 16px;padding:16px;border-radius:14px;
+    background:linear-gradient(135deg, rgba(0,180,255,.1), rgba(39,224,154,.14));
+    border:1.5px solid rgba(15,174,116,.25);text-align:center;
+  }
+  .r-effect .lbl{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.16em;color:var(--green-deep);font-weight:700}
+  .r-effect .big{font-size:21px;font-weight:800;letter-spacing:-.02em;margin-top:6px;line-height:1.3}
+  .r-effect .big em{font-style:normal;color:var(--green-deep)}
+  .r-effect .tree{font-size:30px;margin-top:6px}
+
+  .r-lines{font-family:'Space Mono',monospace;font-size:11.5px;color:#3a4a5c}
+  .r-line{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px dotted var(--line)}
+  .r-line span:last-child{font-weight:700;color:var(--ink)}
+  .r-line.total{border-bottom:none;border-top:1.5px dashed var(--line);margin-top:4px;padding-top:9px;font-size:13px}
+  .r-line.total span:last-child{color:var(--green-deep)}
+
+  .r-foot{
+    margin-top:16px;text-align:center;font-size:13px;line-height:1.55;font-weight:600;color:#28384a;
+  }
+  .r-foot b{color:var(--socar)}
+  .r-barcode{
+    margin-top:14px;height:42px;
+    background:repeating-linear-gradient(90deg,var(--ink) 0 2px,transparent 2px 4px,var(--ink) 4px 5px,transparent 5px 9px);
+    opacity:.85;
+  }
+  .r-serial{font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:.2em;color:var(--muted);text-align:center;margin-top:6px}
+
+  /* 일레클일 때 포인트 컬러 전환 */
+  .receipt.eleca .r-logo .so{color:var(--eleca)}
+  .receipt.eleca .r-effect{
+    background:linear-gradient(135deg, rgba(122,92,255,.12), rgba(39,224,154,.14));
+    border-color:rgba(122,92,255,.28);
+  }
+  .receipt.eleca .r-foot b{color:var(--eleca)}
+
+  /* buttons */
+  .actions{display:flex;flex-direction:column;gap:10px;animation:rise .6s .2s ease both}
+  .btn{
+    border:none;cursor:pointer;font-family:inherit;font-weight:800;letter-spacing:-.01em;
+    border-radius:15px;padding:16px;font-size:15px;display:flex;align-items:center;justify-content:center;gap:9px;
+    transition:transform .12s ease, box-shadow .2s ease;
+  }
+  .btn:active{transform:translateY(1px) scale(.99)}
+  .btn-insta{
+    color:#fff;background:linear-gradient(105deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5);
+    background-size:200% 100%;box-shadow:0 14px 30px -14px rgba(214,41,118,.9);
+    animation:shimmer 5s linear infinite;
+  }
+  @keyframes shimmer{to{background-position:200% 0}}
+  .btn-save{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2)}
+  .btn-skip{background:none;color:#7fa3c4;font-weight:600;font-size:13px;padding:6px}
+
+  .note{
+    text-align:center;font-size:11px;color:#6b8aa8;line-height:1.6;margin-top:2px;
+    font-family:'Space Mono',monospace;letter-spacing:.02em;
+  }
+
+  /* ===== INSTA STORY PREVIEW (mockup) ===== */
+  .story-overlay{
+    position:fixed;inset:0;z-index:80;display:none;align-items:center;justify-content:center;
+    background:rgba(2,8,18,.86);backdrop-filter:blur(8px);padding:20px;
+  }
+  .story-overlay.show{display:flex;animation:fade .3s ease both}
+  .story-frame{
+    width:260px;height:462px;border-radius:26px;overflow:hidden;position:relative;
+    background:linear-gradient(160deg,#0a2a4d,#04304f 40%,#063b30);
+    box-shadow:0 40px 80px -30px rgba(0,0,0,.9);
+    animation:popIn .45s cubic-bezier(.2,1.1,.3,1) both;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;padding:22px;
+  }
+  .story-frame::before{
+    content:"";position:absolute;top:14px;left:14px;right:14px;height:3px;border-radius:3px;
+    background:rgba(255,255,255,.4);
+  }
+  .story-head{
+    position:absolute;top:26px;left:16px;display:flex;align-items:center;gap:8px;font-size:11px;font-weight:700;
+  }
+  .story-head .ava{width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,var(--socar),var(--green))}
+  .mini-receipt{
+    background:var(--paper);color:var(--ink);width:185px;border-radius:8px;padding:16px 16px 18px;
+    box-shadow:0 18px 30px -14px rgba(0,0,0,.6);transform:rotate(-3deg);
+  }
+  .mini-receipt .ml{font-family:'Archivo Black',sans-serif;font-size:17px;text-align:center}
+  .mini-receipt .ml .green{color:var(--green-deep)}
+  .mini-receipt .me{
+    margin:10px 0;padding:10px;border-radius:8px;text-align:center;
+    background:linear-gradient(135deg, rgba(0,180,255,.12), rgba(39,224,154,.16));
+  }
+  .mini-receipt .me .l{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:.12em;color:var(--green-deep);font-weight:700}
+  .mini-receipt .me .b{font-size:14px;font-weight:800;margin-top:3px}
+  .mini-receipt .mf{font-size:10px;text-align:center;color:#3a4a5c;font-weight:600;line-height:1.4}
+  .story-sticker{
+    position:absolute;bottom:70px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;
+    background:#fff;color:var(--ink);padding:6px 12px;border-radius:999px;font-weight:700;transform:rotate(2deg);
+  }
+  .story-close{
+    position:absolute;bottom:24px;left:50%;transform:translateX(-50%);
+    background:#fff;color:var(--ink);border:none;border-radius:999px;padding:10px 22px;
+    font-family:inherit;font-weight:800;font-size:13px;cursor:pointer;z-index:90;
+  }
+  .story-cap{position:absolute;top:-30px;left:0;right:0;text-align:center;color:#9fc4e3;font-size:11px;font-family:'Space Mono',monospace}
+
+  /* toast */
+  .toast{
+    position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);
+    background:#fff;color:var(--ink);padding:13px 20px;border-radius:13px;
+    font-size:13.5px;font-weight:700;box-shadow:0 16px 30px -14px rgba(0,0,0,.6);
+    opacity:0;pointer-events:none;transition:.25s;z-index:100;max-width:88vw;text-align:center;
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  @keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+  @keyframes popIn{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:scale(1)}}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  @keyframes printOut{
+    0%{opacity:0;transform:translateY(-40px) scaleY(.4)}
+    60%{opacity:1}
+    100%{opacity:1;transform:translateY(0) scaleY(1)}
+  }
+</style>
+</head>
+<body>
+<div class="phone">
+
+  <div class="done-head">
+    <div class="done-check">✓</div>
+    <h1 id="doneTitle">반납이 완료됐어요</h1>
+    <p id="doneSub">오늘의 영리한 이동, 지구도 고마워합니다 🌍</p>
+  </div>
+
+  <div class="svc-toggle">
+    <button id="tgSocar" class="on" onclick="setSvc('socar')">쏘카</button>
+    <button id="tgEleca" onclick="setSvc('eleca')">일레클</button>
+  </div>
+
+  <div class="receipt-stage">
+    <div class="receipt" id="receipt">
+      <div class="r-brand">
+        <span class="svc" id="rSvc">SOCAR</span>
+        <span id="rDate">2025.05.31 / RETURN</span>
+      </div>
+
+      <div style="text-align:center">
+        <div class="r-logo"><span class="so">SO,</span> <span class="green">GREEN</span></div>
+        <div class="r-tag">share effect receipt</div>
+      </div>
+
+      <div class="r-effect">
+        <div class="lbl">SHARE EFFECT</div>
+        <div class="big">오늘도 <em id="treeNum">1.2</em>그루의<br>소나무를 지켰습니다!</div>
+        <div class="tree">🌲</div>
+      </div>
+
+      <div class="r-lines">
+        <div class="r-line"><span>이동 방식</span><span id="lMode">소유 대신 공유</span></div>
+        <div class="r-line"><span>절감한 CO₂</span><span id="lco2">2.4 kg</span></div>
+        <div class="r-line"><span>대체한 자가용</span><span>1대</span></div>
+        <div class="r-line total"><span>오늘의 그린 점수</span><span id="lscore">+120 G</span></div>
+      </div>
+
+      <div class="r-foot">
+        소유 대신 공유를 선택한 <b id="rUser">OO</b>님의<br>영리한 이동을 인증해 보세요.
+      </div>
+
+      <div class="r-barcode"></div>
+      <div class="r-serial" id="rSerial">SG-2025-0531-7H2K9</div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="btn btn-insta" onclick="openStory()">
+      <span style="font-size:18px">📷</span> 인스타그램 스토리에 공유하기
+    </button>
+    <button class="btn btn-save" onclick="saveImage()">⤓ 이미지로 저장하기</button>
+    <button class="btn btn-skip" onclick="toast('다음에 또 만나요 👋')">다음에 할게요</button>
+  </div>
+
+  <p class="note">// 추가 리워드 없이, 자발적 바이럴을 위한 인증 카드<br>POWERED BY SO, GREEN × ESG</p>
+</div>
+
+<!-- INSTA STORY MOCKUP -->
+<div class="story-overlay" id="storyOverlay">
+  <div style="position:relative">
+    <div class="story-cap" id="storyCap">↓ 인스타 스토리에 이렇게 올라가요 (시연용 미리보기)</div>
+    <div class="story-frame">
+      <div class="story-head"><span class="ava"></span><span style="color:#fff">socar_user</span></div>
+      <div class="mini-receipt">
+        <div class="ml"><span style="color:#00b4ff">SO,</span> <span class="green">GREEN</span></div>
+        <div class="me">
+          <div class="l">SHARE EFFECT</div>
+          <div class="b">오늘도 <span id="msTree">1.2</span>그루의<br>소나무를 지켰습니다!</div>
+        </div>
+        <div class="mf">소유 대신 공유,<br>오늘도 영리하게 이동 완료 🌲</div>
+      </div>
+      <div class="story-sticker">#SOGREEN #공유가이긴다</div>
+    </div>
+    <button class="story-close" onclick="closeStory()">닫기</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const SVC = {
+  socar:{ name:"SOCAR", mode:"소유 대신 공유", tree:"1.2", co2:"2.4 kg", score:"+120 G",
+          title:"쏘카 반납이 완료됐어요", sub:"오늘의 영리한 이동, 지구도 고마워합니다 🌍", user:"민지", handle:"socar_user" },
+  eleca:{ name:"ELECLE", mode:"전기자전거 라이딩", tree:"0.4", co2:"0.8 kg", score:"+60 G",
+          title:"일레클 반납이 완료됐어요", sub:"페달 대신 전기로, 가볍게 그린 이동 🚲", user:"민지", handle:"elecle_user" }
+};
+let current="socar";
+
+function setSvc(key){
+  current=key;
+  const s=SVC[key];
+  document.getElementById("tgSocar").classList.toggle("on", key==="socar");
+  document.getElementById("tgEleca").classList.toggle("on", key==="eleca");
+  document.getElementById("tgEleca").classList.toggle("eleca", key==="eleca");
+  document.getElementById("receipt").classList.toggle("eleca", key==="eleca");
+  document.getElementById("doneTitle").textContent=s.title;
+  document.getElementById("doneSub").textContent=s.sub;
+  document.getElementById("rSvc").textContent=s.name;
+  document.getElementById("treeNum").textContent=s.tree;
+  document.getElementById("lMode").textContent=s.mode;
+  document.getElementById("lco2").textContent=s.co2;
+  document.getElementById("lscore").textContent=s.score;
+  document.getElementById("rUser").textContent=s.user;
+  document.getElementById("msTree").textContent=s.tree;
+  document.querySelector(".story-head span:last-child").textContent = s.handle;
+  // re-trigger print animation
+  const r=document.getElementById("receipt");
+  r.style.animation="none"; void r.offsetWidth; r.style.animation="";
+}
+
+function openStory(){
+  // 목업: 실제 인스타 연동 없이 스토리 미리보기만 표시
+  document.getElementById("storyOverlay").classList.add("show");
+}
+function closeStory(){
+  document.getElementById("storyOverlay").classList.remove("show");
+  toast("스토리에 공유했어요! (시연용)");
+}
+function saveImage(){
+  toast("뱃지를 이미지로 저장했어요 (시연용)");
+}
+function toast(msg){
+  const t=document.getElementById("toast");
+  t.textContent=msg; t.classList.add("show");
+  clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove("show"),2000);
+}
+
+// 날짜 자동
+(function(){
+  const d=new Date();
+  const p=n=>String(n).padStart(2,"0");
+  document.getElementById("rDate").textContent=`${d.getFullYear()}.${p(d.getMonth()+1)}.${p(d.getDate())} / RETURN`;
+})();
+</script>
+</body>
+</html>
